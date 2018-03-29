@@ -4,7 +4,7 @@
 ///                                                            ///
 //////////////////////////////////////////////////////////////////
 
-let port = 80,
+let port = 8080,
     debug = require('./debugger'),
     path = require('path'),
     express = require('express'),

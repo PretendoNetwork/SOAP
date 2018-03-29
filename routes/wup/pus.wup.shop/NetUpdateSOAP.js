@@ -1,43 +1,31 @@
-let routes = require('express').Router(),
-    json2xml = require('json2xml'),
-    debug = require('../../../debugger'),
-    route_debugger = new debug('NetUpdateSOAP');
+const routes = require('express').Router();
+const NetUpdateSOAP = require('../../../SOAP/services/NetUpdateSOAP');
+const debug = require('../../../debugger');
+const route_debugger = new debug('NetUpdateSOAP');
 
 route_debugger.success('Loading \'NetUpdateSOAP\'');
 /**
  * [POST]
  * Replacement for: https://nus.wup.shop.nintendo.net/nus/services/NetUpdateSOAP
- * Description: Returns console titlehash to check if any apps need updating
+ * Description: Console related SOAP requests?
  */
 routes.all('/', (request, response) => {
-    response.set('Content-Type', 'text/xml;charset=utf-8');
+	response.set('Content-Type', 'text/xml;charset=utf-8');
+	response.set('Transfer-Encoding', 'chunked');
 
-    let SOAPXML = request.body;
+	const SOAP = new NetUpdateSOAP(request.body);
+	const action = request.headers.soapaction.split('/').shift();
 
-    response.send(json2xml({
-        attributes: {
-            "xmlns:soapenv": 'http://schemas.xmlsoap.org/soap/envelope/',
-            "xmlns:xsd": 'http://www.w3.org/2001/XMLSchema',
-            "xmlns:xsi": 'http://www.w3.org/2001/XMLSchema-instance',
-        },
-        "soapenv:Envelope": {
-            "soapenv:Body": {
-                attributes: {
-                    xmlns: 'urn:nus.wsapi.broadon.com',
-                },
-                GetSystemTitleHashResponse: {
-                    Version: SOAPXML['SOAP-ENV:Body']['nus:GetSystemTitleHash']['nus:Version'],
-                    DeviceId: SOAPXML['SOAP-ENV:Body']['nus:GetSystemTitleHash']['nus:DeviceId'],
-                    MessageId: SOAPXML['SOAP-ENV:Body']['nus:GetSystemTitleHash']['nus:MessageId'],
-                    TimeStamp: Date.now(),
-                    ErrorCode: '0',
-                    TitleHash: '0',
-                }
-            }
-        }
-    }, {
-        attributes_key: 'attributes'
-    }));
+	switch (action) {
+		case 'GetSystemTitleHash':
+			response.send(SOAP.GetSystemTitleHash());
+			break;
+		case 'GetSystemUpdate':
+			response.send(SOAP.GetSystemUpdate());
+			break;
+		default:
+			break;
+	}
 });
 
 module.exports = routes;
