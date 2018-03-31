@@ -7,6 +7,7 @@ class NetUpdateSOAP extends SOAP {
 	}
 
 	GetSystemTitleHash() {
+		// The console doesnt accept the response unless the `?xml` tag is defined
 		return json2xml({
 			tag_attributes: {
 				'xmlns:soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
@@ -20,7 +21,7 @@ class NetUpdateSOAP extends SOAP {
 					},
 					GetSystemTitleHashResponse: {
 						Version: this.version,
-						DeviceId: this.device_id,
+						DeviceId: this.device_id.toString(),
 						MessageId: this.message_id,
 						TimeStamp: Date.now(),
 						ErrorCode: 0,
@@ -58,13 +59,13 @@ class NetUpdateSOAP extends SOAP {
 			<soapenv:Body>\
 				<GetSystemUpdateResponse xmlns="urn:nus.wsapi.broadon.com">\
 					<Version>' + this.version + '</Version>\
-					<DeviceId>' + this.device_id + '</DeviceId>\
+					<DeviceId>' + this.device_id.toString() + '</DeviceId>\
 					<MessageId>' + this.message_id + '</MessageId>\
 					<TimeStamp>' + Date.now() + '</TimeStamp>\
 					<ErrorCode>0</ErrorCode>\
 					<TitleHash>00000000000000000000000000000000</TitleHash>\
-					<ContentPrefixURL>http://ccs.cdn.wup.shop.nintendo.net/ccs/download</ContentPrefixURL>\
-					<UncachedContentPrefixURL>https://ccs.wup.shop.nintendo.net/ccs/download</UncachedContentPrefixURL>\
+					<ContentPrefixURL>http://ccs.cdn.wup.shop.pretendo.cc/ccs/download</ContentPrefixURL>\
+					<UncachedContentPrefixURL>https://ccs.wup.shop.pretendo.cc/ccs/download</UncachedContentPrefixURL>\
 					<UploadAuditData>1</UploadAuditData>\
 					<TitleVersion>\
 						<TitleId>0005000000000001</TitleId>\

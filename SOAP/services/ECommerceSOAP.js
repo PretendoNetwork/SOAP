@@ -12,7 +12,85 @@ class ECommerceSOAP extends SOAP {
 		// The eShop sends with `ServiceLevel` set to "SHOP"
 		// Seems to return different values based on scope
 
-		return json2xml({
+		switch (this.xml['SOAP-ENV:Body']['ecs:GetAccountStatus']['ecs:ServiceLevel']) {
+			case 'SHOP':
+				return '\
+				<?xml version="1.0" encoding="UTF-8"?>\
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
+					<soapenv:Body>\
+							<GetAccountStatusResponse xmlns="urn:ecs.wsapi.broadon.com">\
+							<Version>' + this.version + '</Version>\
+							<DeviceId>' + this.device_id.toString() + '</DeviceId>\
+							<MessageId>' + this.message_id + '</MessageId>\
+							<TimeStamp>' + Date.now() + '</TimeStamp>\
+							<ErrorCode>0</ErrorCode>\
+							<ServiceStandbyMode>false</ServiceStandbyMode>\
+							<AccountId>' + this.xml['SOAP-ENV:Body']['ecs:GetAccountStatus']['ecs:AccountId'] + '</AccountId>\
+							<AccountStatus>R</AccountStatus>\
+							<Balance>\
+								<Amount>0</Amount>\
+								<Currency>USD</Currency>\
+							</Balance>\
+							<EulaVersion>0</EulaVersion>\
+							<Country>' + this.xml['SOAP-ENV:Body']['ecs:GetAccountStatus']['ecs:Country'] + '</Country>\
+							<Region>' + this.xml['SOAP-ENV:Body']['ecs:GetAccountStatus']['ecs:Region'] + '</Region>\
+							<AccountAttributes>\
+								<Name>LOYALTY_LOGIN_NAME</Name>\
+								<Value />\
+							</AccountAttributes>\
+							<TIV>1686923775444701.0</TIV>\
+							<TIV>1525253552582617.0</TIV>\
+							<TIV>1599213916864029.0</TIV>\
+							<TIV>1407443630154988.0</TIV>\
+							<TIV>1584974316633765.0</TIV>\
+							<TIV>1559042506031332.0</TIV>\
+							<TIV>1439362764886455.0</TIV>\
+							<TIV>1606635314418717.0</TIV>\
+							<TIV>1473290677795574.0</TIV>\
+							<TIV>1433989242744440.0</TIV>\
+							<ServiceURLs>\
+								<Name>ContentPrefixURL</Name>\
+								<URI>http://ccs.cdn.wup.shop.pretendo.cc/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>UncachedContentPrefixURL</Name>\
+								<URI>http://ccs.wup.shop.pretendo.cc/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>SystemContentPrefixURL</Name>\
+								<URI>http://pus.cdn.wup.shop.pretendo.cc/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>SystemUncachedContentPrefixURL</Name>\
+								<URI>http://ccs.wup.shop.pretendo.cc/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>EcsURL</Name>\
+								<URI>http://ecs.wup.shop.pretendo.cc/ecs/services/ECommerceSOAP</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>IasURL</Name>\
+								<URI>http://ias.wup.shop.pretendo.cc/ias/services/IdentityAuthenticationSOAP</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>CasURL</Name>\
+								<URI>http://cas.wup.shop.pretendo.cc/cas/services/CatalogingSOAP</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>NusURL</Name>\
+								<URI>http://pus.wup.shop.pretendo.cc/pus/services/NetUpdateSOAP</URI>\
+							</ServiceURLs>\
+							<IVSSyncFlag>false</IVSSyncFlag>\
+							<CountryAttribits>12</CountryAttribits>\
+						</GetAccountStatusResponse>\
+					</soapenv:Body>\
+				</soapenv:Envelope>';
+				break;
+			default:
+				break;
+		}
+
+		/*return json2xml({
 			tag_attributes: {
 				'xmlns:soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
 				'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
@@ -21,11 +99,11 @@ class ECommerceSOAP extends SOAP {
 			'soapenv:Envelope': {
 				'soapenv:Body': {
 					tag_attributes: {
-						xmlns: 'urn:nus.wsapi.broadon.com'
+						xmlns: 'urn:ecs.wsapi.broadon.com'
 					},
 					GetAccountStatusResponse: {
 						Version: this.version,
-						DeviceId: this.device_id,
+						DeviceId: this.device_id.toString(),
 						MessageId: this.message_id,
 						TimeStamp: Date.now(),
 						ErrorCode: 0,
@@ -36,13 +114,38 @@ class ECommerceSOAP extends SOAP {
 			}
 		}, {
 			attributes_key: 'tag_attributes'
-		});
+		});*/
 	}
 
 	AccountListETicketIds() {
 		// I have no idea how to work with this on right now
 		// Returns a list of `TIV` fields, which seem to be the IV's of the tickets
 		// They are always the same for each request, and is in float values
+		// For now, just always send the same thing
+
+		return '\
+		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
+			<soapenv:Body>\
+				<AccountListETicketIdsResponse xmlns="urn:ecs.wsapi.broadon.com">\
+					<Version>' + this.version + '</Version>\
+					<DeviceId>' + this.device_id.toString() + '</DeviceId>\
+					<MessageId>' + this.message_id + '</MessageId>\
+					<TimeStamp>' + Date.now() + '</TimeStamp>\
+					<ErrorCode>0</ErrorCode>\
+					<ServiceStandbyMode>false</ServiceStandbyMode>\
+					<TIV>1686923775444701.0</TIV>\
+					<TIV>1525253552582617.0</TIV>\
+					<TIV>1599213916864029.0</TIV>\
+					<TIV>1407443630154988.0</TIV>\
+					<TIV>1584974316633765.0</TIV>\
+					<TIV>1559042506031332.0</TIV>\
+					<TIV>1439362764886455.0</TIV>\
+					<TIV>1606635314418717.0</TIV>\
+					<TIV>1473290677795574.0</TIV>\
+					<TIV>1433989242744440.0</TIV>\
+				</AccountListETicketIdsResponse>\
+			</soapenv:Body>\
+		</soapenv:Envelope>';
 	}
 }
 

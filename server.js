@@ -4,17 +4,17 @@
 ///                                                            ///
 //////////////////////////////////////////////////////////////////
 
-let port = 8080,
-    debug = require('./debugger'),
-    path = require('path'),
-    express = require('express'),
-    subdomain = require('express-subdomain'),
-    XMLMiddleware = require('./xml-middleware'),
-    colors = require('colors'),
-    morgan = require('morgan'),
-    app = express();
+const port = 80;
+const debug = require('./debugger');
+const path = require('path');
+const express = require('express');
+const subdomain = require('express-subdomain');
+const XMLMiddleware = require('./xml-middleware');
+const morgan = require('morgan');
+const app = express();
+require('colors');
 
-let server_debugger = new debug('Server');
+const server_debugger = new debug('Server');
 
 // Routers and subdomains
 const ROUTERS = {
@@ -36,7 +36,9 @@ server_debugger.log('Importing routes');
 const ROUTES = {
     WUP: { // WiiU
         SOAP: {
-            NET_UPDATE: require('./routes/wup/pus.wup.shop/NetUpdateSOAP')
+            NET_UPDATE: require('./routes/wup/pus.wup.shop/NetUpdateSOAP'),
+            ECOMMERCE: require('./routes/wup/ecs.wup.shop/ECommerceSOAP'),
+            IDENTIFY_AUTHENTICATION: require('./routes/wup/ias.wup.shop/IdentityAuthenticationSOAP'),
         }
     },
     CTR: { // Old 3DS/2DS
@@ -76,6 +78,8 @@ app.use(subdomain('pus.wup.shop', ROUTERS.WUP.PUS_WUP_SHOP));
 // Setup routes
 server_debugger.log('Applying imported routes');
 ROUTERS.WUP.PUS_WUP_SHOP.use('/pus/services/NetUpdateSOAP', ROUTES.WUP.SOAP.NET_UPDATE); // NetUpdateSOAP
+ROUTERS.WUP.ECS_WUP_SHOP.use('/ecs/services/ECommerceSOAP', ROUTES.WUP.SOAP.ECOMMERCE); // ECommerceSOAP
+ROUTERS.WUP.IAS_WUP_SHOP.use('/ias/services/IdentityAuthenticationSOAP', ROUTES.WUP.SOAP.IDENTIFY_AUTHENTICATION); // IdentityAuthenticationSOAP
 
 // 404 handler
 server_debugger.log('Creating 404 status handler');

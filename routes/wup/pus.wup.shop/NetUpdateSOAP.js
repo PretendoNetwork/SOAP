@@ -11,10 +11,9 @@ route_debugger.success('Loading \'NetUpdateSOAP\'');
  */
 routes.all('/', (request, response) => {
 	response.set('Content-Type', 'text/xml;charset=utf-8');
-	response.set('Transfer-Encoding', 'chunked');
 
-	const SOAP = new NetUpdateSOAP(request.body);
-	const action = request.headers.soapaction.split('/').shift();
+	const SOAP = new NetUpdateSOAP(request.xml);
+	const action = request.headers.soapaction.split('/').pop();
 
 	switch (action) {
 		case 'GetSystemTitleHash':

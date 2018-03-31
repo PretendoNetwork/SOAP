@@ -9,7 +9,6 @@ function middleware() {
     return XMLMiddleware;
 
     function XMLMiddleware(request, response, next) {
-        console.log(request.method)
         if (request.method == 'POST' || request.method == 'PUT') {
             let headers = request.headers,
                 body = '';
@@ -27,9 +26,9 @@ function middleware() {
             });
 
             request.on('end', () => {
-                console.log(body)
                 try {
                     request.body = XML.parse(body);
+                    request.xml = body;
                 } catch (error) {
                     return next();
                 }
