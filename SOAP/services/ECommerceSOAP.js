@@ -7,6 +7,11 @@ class ECommerceSOAP extends SOAP {
 	}
 
 	GetAccountStatus() {
+
+		// This request seems to send a scope in the form of the `ServiceLevel` tag
+		// The eShop sends with `ServiceLevel` set to "SHOP"
+		// Seems to return different values based on scope
+
 		return json2xml({
 			tag_attributes: {
 				'xmlns:soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
@@ -32,6 +37,12 @@ class ECommerceSOAP extends SOAP {
 		}, {
 			attributes_key: 'tag_attributes'
 		});
+	}
+
+	AccountListETicketIds() {
+		// I have no idea how to work with this on right now
+		// Returns a list of `TIV` fields, which seem to be the IV's of the tickets
+		// They are always the same for each request, and is in float values
 	}
 }
 
