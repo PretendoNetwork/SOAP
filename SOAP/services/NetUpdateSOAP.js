@@ -24,7 +24,7 @@ class NetUpdateSOAP extends SOAP {
 						MessageId: this.message_id,
 						TimeStamp: Date.now(),
 						ErrorCode: 0,
-						TitleHash: 00000000000000000000000000000000
+						TitleHash: '00000000000000000000000000000000'
 					}
 				}
 			}
@@ -62,9 +62,9 @@ class NetUpdateSOAP extends SOAP {
 					<MessageId>' + this.message_id + '</MessageId>\
 					<TimeStamp>' + Date.now() + '</TimeStamp>\
 					<ErrorCode>0</ErrorCode>\
-					<TitleHash>0</TitleHash>\
-					<ContentPrefixURL />\
-					<UncachedContentPrefixURL />\
+					<TitleHash>00000000000000000000000000000000</TitleHash>\
+					<ContentPrefixURL>http://ccs.cdn.wup.shop.nintendo.net/ccs/download</ContentPrefixURL>\
+					<UncachedContentPrefixURL>https://ccs.wup.shop.nintendo.net/ccs/download</UncachedContentPrefixURL>\
 					<UploadAuditData>1</UploadAuditData>\
 					<TitleVersion>\
 						<TitleId>0005000000000001</TitleId>\
@@ -82,7 +82,8 @@ class NetUpdateSOAP extends SOAP {
 					</TitleVersion>\
 				</GetSystemUpdateResponse>\
 			</soapenv:Body>\
-		</soapenv:Envelope>';
+		</soapenv:Envelope>\
+		';
 
 		return xml;
 	}
