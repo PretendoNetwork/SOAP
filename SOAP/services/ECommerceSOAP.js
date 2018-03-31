@@ -12,10 +12,11 @@ class ECommerceSOAP extends SOAP {
 		// The eShop sends with `ServiceLevel` set to "SHOP"
 		// Seems to return different values based on scope
 
+		let xml;
+
 		switch (this.xml['SOAP-ENV:Body']['ecs:GetAccountStatus']['ecs:ServiceLevel']) {
 			case 'SHOP':
-				return '\
-				<?xml version="1.0" encoding="UTF-8"?>\
+				xml = '\
 				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
 					<soapenv:Body>\
 							<GetAccountStatusResponse xmlns="urn:ecs.wsapi.broadon.com">\
@@ -50,35 +51,85 @@ class ECommerceSOAP extends SOAP {
 							<TIV>1433989242744440.0</TIV>\
 							<ServiceURLs>\
 								<Name>ContentPrefixURL</Name>\
-								<URI>http://ccs.cdn.wup.shop.pretendo.cc/ccs/download</URI>\
+								<URI>http://ccs.cdn.wup.shop.nintendo.net/ccs/download</URI>\
 							</ServiceURLs>\
 							<ServiceURLs>\
 								<Name>UncachedContentPrefixURL</Name>\
-								<URI>http://ccs.wup.shop.pretendo.cc/ccs/download</URI>\
+								<URI>http://ccs.wup.shop.nintendo.net/ccs/download</URI>\
 							</ServiceURLs>\
 							<ServiceURLs>\
 								<Name>SystemContentPrefixURL</Name>\
-								<URI>http://pus.cdn.wup.shop.pretendo.cc/ccs/download</URI>\
+								<URI>http://nus.cdn.wup.shop.nintendo.net/ccs/download</URI>\
 							</ServiceURLs>\
 							<ServiceURLs>\
 								<Name>SystemUncachedContentPrefixURL</Name>\
-								<URI>http://ccs.wup.shop.pretendo.cc/ccs/download</URI>\
+								<URI>http://ccs.wup.shop.nintendo.net/ccs/download</URI>\
 							</ServiceURLs>\
 							<ServiceURLs>\
 								<Name>EcsURL</Name>\
-								<URI>http://ecs.wup.shop.pretendo.cc/ecs/services/ECommerceSOAP</URI>\
+								<URI>http://ecs.wup.shop.nintendo.net/ecs/services/ECommerceSOAP</URI>\
 							</ServiceURLs>\
 							<ServiceURLs>\
 								<Name>IasURL</Name>\
-								<URI>http://ias.wup.shop.pretendo.cc/ias/services/IdentityAuthenticationSOAP</URI>\
+								<URI>http://ias.wup.shop.nintendo.net/ias/services/IdentityAuthenticationSOAP</URI>\
 							</ServiceURLs>\
 							<ServiceURLs>\
 								<Name>CasURL</Name>\
-								<URI>http://cas.wup.shop.pretendo.cc/cas/services/CatalogingSOAP</URI>\
+								<URI>http://cas.wup.shop.nintendo.net/cas/services/CatalogingSOAP</URI>\
 							</ServiceURLs>\
 							<ServiceURLs>\
 								<Name>NusURL</Name>\
-								<URI>http://pus.wup.shop.pretendo.cc/pus/services/NetUpdateSOAP</URI>\
+								<URI>http://nus.wup.shop.nintendo.net/nus/services/NetUpdateSOAP</URI>\
+							</ServiceURLs>\
+							<IVSSyncFlag>false</IVSSyncFlag>\
+							<CountryAttribits>12</CountryAttribits>\
+						</GetAccountStatusResponse>\
+					</soapenv:Body>\
+				</soapenv:Envelope>';
+				break;
+			case 'SYSTEM':
+				xml = '\
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
+					<soapenv:Body>\
+							<GetAccountStatusResponse xmlns="urn:ecs.wsapi.broadon.com">\
+							<Version>' + this.version + '</Version>\
+							<DeviceId>' + this.device_id.toString() + '</DeviceId>\
+							<MessageId>' + this.message_id + '</MessageId>\
+							<TimeStamp>' + Date.now() + '</TimeStamp>\
+							<ErrorCode>0</ErrorCode>\
+							<ServiceStandbyMode>false</ServiceStandbyMode>\
+							<AccountStatus>R</AccountStatus>\
+							<ServiceURLs>\
+								<Name>ContentPrefixURL</Name>\
+								<URI>http://ccs.cdn.wup.shop.nintendo.net/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>UncachedContentPrefixURL</Name>\
+								<URI>http://ccs.wup.shop.nintendo.net/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>SystemContentPrefixURL</Name>\
+								<URI>http://nus.cdn.wup.shop.nintendo.net/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>SystemUncachedContentPrefixURL</Name>\
+								<URI>http://ccs.wup.shop.nintendo.net/ccs/download</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>EcsURL</Name>\
+								<URI>http://ecs.wup.shop.nintendo.net/ecs/services/ECommerceSOAP</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>IasURL</Name>\
+								<URI>http://ias.wup.shop.nintendo.net/ias/services/IdentityAuthenticationSOAP</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>CasURL</Name>\
+								<URI>http://cas.wup.shop.nintendo.net/cas/services/CatalogingSOAP</URI>\
+							</ServiceURLs>\
+							<ServiceURLs>\
+								<Name>NusURL</Name>\
+								<URI>http://nus.wup.shop.nintendo.net/nus/services/NetUpdateSOAP</URI>\
 							</ServiceURLs>\
 							<IVSSyncFlag>false</IVSSyncFlag>\
 							<CountryAttribits>12</CountryAttribits>\
@@ -89,6 +140,8 @@ class ECommerceSOAP extends SOAP {
 			default:
 				break;
 		}
+
+		return '<?xml version="1.0" encoding="utf-8"?>' + xml.trim();
 
 		/*return json2xml({
 			tag_attributes: {
@@ -123,7 +176,7 @@ class ECommerceSOAP extends SOAP {
 		// They are always the same for each request, and is in float values
 		// For now, just always send the same thing
 
-		return '\
+		const xml = '\
 		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
 			<soapenv:Body>\
 				<AccountListETicketIdsResponse xmlns="urn:ecs.wsapi.broadon.com">\
@@ -146,6 +199,8 @@ class ECommerceSOAP extends SOAP {
 				</AccountListETicketIdsResponse>\
 			</soapenv:Body>\
 		</soapenv:Envelope>';
+
+		return '<?xml version="1.0" encoding="utf-8"?>' + xml.trim();
 	}
 }
 

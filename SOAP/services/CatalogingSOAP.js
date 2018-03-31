@@ -4,6 +4,12 @@ class CatalogingSOAP extends SOAP {
 	constructor(string) {
 		super(string);
 	}
+
+	ListTitlesEx() {
+	}
+
+	ListContentSetsEx() {
+	}
 }
 
 module.exports = CatalogingSOAP;

@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.1.2",
+    "csvjson": "^5.0.0",
     "express": "^4.16.2",
     "express-subdomain": "^1.0.5",
     "json2xml": "^0.1.3",
@@ -18,5 +19,9 @@
     "ms": "^2.1.1",
     "pixl-xml": "^1.0.13",
     "soap": "^0.23.0"
+  },
+  "devDependencies": {
+    "csvtojson": "^1.1.9",
+    "got": "^8.3.0"
   }
 }

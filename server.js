@@ -49,6 +49,7 @@ const ROUTES = {
 
 // START APPLICATION
 app.set('etag', false);
+app.disable('x-powered-by');
 
 // Create router
 server_debugger.log('Setting up Middleware');

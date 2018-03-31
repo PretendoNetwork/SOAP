@@ -12,7 +12,7 @@ class IdentityAuthenticationSOAP extends SOAP {
 		// For me it is always `RLYiHamaD+wFtYDf3bakWw==`
 		// For now, ignore data and always respond the same
 
-		return json2xml({
+		return '<?xml version="1.0" encoding="utf-8"?>' + json2xml({
 			tag_attributes: {
 				'xmlns:soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
 				'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
@@ -35,7 +35,7 @@ class IdentityAuthenticationSOAP extends SOAP {
 			}
 		}, {
 			attributes_key: 'tag_attributes'
-		});
+		}).trim();
 	}
 }
 
