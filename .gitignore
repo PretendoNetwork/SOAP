@@ -57,5 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
-# Custom
+# custom
 config.json
+titles
+ticket
+ivs.js
