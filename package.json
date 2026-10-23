@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Nintendo SOAP replacement",
   "main": "./src/server",
+  "engines": {
+    "node": "^24.22.1"
+  },
   "scripts": {
     "start": "node ./src/server"
   },
